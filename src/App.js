@@ -1,7 +1,8 @@
 import React from 'react'
+import Modell from './model/Shopping'
 import GruppenTag from './components/GruppenTag'
 import GruppenDialog from './components/GruppenDialog'
-import Modell from './model/Shopping'
+import SortierDialog from "./components/SortierDialog";
 
 
 class App extends React.Component {
@@ -16,21 +17,54 @@ class App extends React.Component {
       erledigtAufgeklappt: false
     }
   }
+  componentDidMount() {
+    if (!Modell.laden()) {
+      this.initialisieren()
+    }
+    this.setState(this.state)
+  }
 
   initialisieren() {
-    let fantasy = Modell.gruppeHinzufuegen("Gemüse")
-    let film1 = fantasy.artikelHinzufuegen("Brokkoli")
+    let staffel1 = Modell.gruppeHinzufuegen("Staffel1")
+    let film1 = staffel1.artikelHinzufuegen("Mobiles Armee Chirurgie Hospital – Pilot\t")
     film1.gekauft = true
-    fantasy.artikelHinzufuegen("Blumenkohl")
-    let scifi = Modell.gruppeHinzufuegen("Getränke")
-    let film2 = scifi.artikelHinzufuegen("Hövels")
+    staffel1.artikelHinzufuegen("Angebot, Nachfrage und Prestige")
+    staffel1.artikelHinzufuegen("Das total verrückte Feldlazarett")
+    staffel1.artikelHinzufuegen("Über alles geliebte Sklavin")
+    staffel1.artikelHinzufuegen("Kennen Sie „Chirurgen in Uniform“?")
+    staffel1.artikelHinzufuegen("Hilfe, einen Psychiater bitte!")
+    staffel1.artikelHinzufuegen("Mein lieber, lieber John")
+    staffel1.artikelHinzufuegen("Ach Henry, komm doch wieder")
+    staffel1.artikelHinzufuegen("Der Dieb will nur das Beste")
+    staffel1.artikelHinzufuegen("Eine richtige, schöne Gelbsucht")
+    staffel1.artikelHinzufuegen("Lieber Papa, mir geht es gut")
+    staffel1.artikelHinzufuegen("Ein Aufstand für Edwina")
+    staffel1.artikelHinzufuegen("Noch so eine Liebesgeschichte")
+    staffel1.artikelHinzufuegen("Nun danket alle Tuttle")
+    staffel1.artikelHinzufuegen("Nur Leben in die Bude!")
+    staffel1.artikelHinzufuegen("Hörst du die Kugeln? ")
+    staffel1.artikelHinzufuegen("Nur Leben in die Bude!")
+    staffel1.artikelHinzufuegen("Nur Leben in die Bude!")
+    staffel1.artikelHinzufuegen("… und alles splitternackt")
+    staffel1.artikelHinzufuegen("Jeder friert für sich allein")
+    staffel1.artikelHinzufuegen("Ein Blindgänger hat’s in sich")
+    staffel1.artikelHinzufuegen("Hier, bitte mal absaugen")
+    staffel1.artikelHinzufuegen("Gier, Angst und noch mal Gier")
+    staffel1.artikelHinzufuegen("Unter der Hand gesagt")
+    staffel1.artikelHinzufuegen("Für manches nicht gut genug")
+
+    let staffel2 = Modell.gruppeHinzufuegen("Staffel2")
+    let film2 = staffel2.artikelHinzufuegen("Zerstritten stehen wir zusammen")
     film2.gekauft = true
-    scifi.artikelHinzufuegen("Veltins")
-    let dokus = Modell.gruppeHinzufuegen("Vegan")
-    let film3 = dokus.artikelHinzufuegen("Linsen")
+    staffel2.artikelHinzufuegen("Das ist Fünf-Uhr-Charlie")
+
+    let staffel3 = Modell.gruppeHinzufuegen("Staffel3")
+    let film3 = staffel3.artikelHinzufuegen("Bauch rein - Brust raus")
     film3.gekauft = true
-    dokus.artikelHinzufuegen("Kichererbsen")
+    staffel3.artikelHinzufuegen("Meuterei im Billigfilm")
+
   }
+
 
   einkaufenAufZuKlappen() {
     let neuerZustand = !this.state.einkaufenAufgeklappt
@@ -49,7 +83,6 @@ class App extends React.Component {
   }
 
   artikelHinzufuegen() {
-    // ToDo: implementiere diese Methode
     const eingabe = document.getElementById("artikelEingabe")
     const artikelName = eingabe.value.trim()
     if (artikelName.length > 0) {
@@ -67,7 +100,7 @@ class App extends React.Component {
   }
 
   render() {
-    let nochZuKaufen = []
+    let nochNichtGesehen = []
     if (this.state.einkaufenAufgeklappt == true) {
       for (const gruppe of Modell.gruppenListe) {
         nochZuKaufen.push(<GruppenTag
@@ -80,7 +113,7 @@ class App extends React.Component {
       }
     }
 
-    let schonGekauft = []
+    let schonGesehen = []
     if (this.state.erledigtAufgeklappt) {
       for (const gruppe of Modell.gruppenListe) {
         schonGekauft.push(<GruppenTag
@@ -102,7 +135,7 @@ class App extends React.Component {
     return (
       <div id="container">
         <header>
-          <h1>Einkaufsliste</h1>
+          <h1>Watchlist</h1>
           <label
             className="mdc-text-field mdc-text-field--filled mdc-text-field--with-trailing-icon mdc-text-field--no-label">
             <span className="mdc-text-field__ripple"></span>
@@ -120,24 +153,24 @@ class App extends React.Component {
 
         <main>
           <section>
-            <h2>Noch zu kaufen
+            <h2>Noch nicht Gesehen
               <i onClick={() => this.einkaufenAufZuKlappen()} className="material-icons">
                 {this.state.einkaufenAufgeklappt ? 'expand_more' : 'expand_less'}
               </i>
             </h2>
             <dl>
-              {nochZuKaufen}
+              {nochNichtGesehen}
             </dl>
           </section>
           <hr/>
           <section>
-            <h2>Schon gekauft
+            <h2> schon gesehen
               <i onClick={() => this.erledigtAufZuKlappen()} className="material-icons">
                 {this.state.erledigtAufgeklappt ? 'expand_more' : 'expand_less'}
               </i>
             </h2>
             <dl>
-              {schonGekauft}
+              {schonGesehen}
             </dl>
           </section>
         </main>
@@ -160,6 +193,7 @@ class App extends React.Component {
         </footer>
 
         {gruppenDialog}
+        {sortierDialog}
       </div>
     )
   }

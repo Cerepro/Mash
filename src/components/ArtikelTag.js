@@ -11,22 +11,13 @@ class ArtikelTag extends React.Component {
     }
   }
 
-  /**
-   * Reagiert auf Änderungen im Eingabefeld und speichert den neuen Wert im newName-state
-   * @param {Event.CHANGE} event - das Change-Event im Eingabefeld
-   */
   handleChange(event) {
     this.setState({newName: event.target.value})
   }
 
-  /**
-   * Benennt einen Artikel um
-   * @param {Artikel} artikel - der umzubenennende Artikel
-   * @param {Event.KEYPRESS} event -
-   */
   artikelUmbenennen(artikel, event) {
     if (event && event.key != "Enter") return
-    // ToDo: Modell.aktuelleGruppe.artikelUmbenennen() verwenden
+
     artikel.name = this.state.newName
     this.setState({isEditing: false})
   }
@@ -67,7 +58,6 @@ class ArtikelTag extends React.Component {
            onClick={() => this.artikelUmbenennen(artikel)}>check_circle </i>
       </dd>
     )
-
 
     return (
       this.state.isEditing

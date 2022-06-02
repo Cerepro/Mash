@@ -1,23 +1,19 @@
 import Gruppe from './Gruppe.js'
 
-/**
- * Diese Klasse steuert das Modell der App
- *
- * @property {Gruppe[]} gruppenListe      - enthält die Artikelgruppen
- * @property {Gruppe}   aktiveGruppe      - enthält die aktuell ausgewählte Gruppe
- * @property {boolean}  meldungenAusgeben - steuert, ob eine Meldung ausgegeben werden soll oder nicht
- */
+
 class Shopping {
   gruppenListe = []
   aktiveGruppe = null
   meldungenAusgeben = true
+  SORTIERUNGEN = {
+    "Eigene Reihenfolge": this.sortiereIndex,
+    "Aufsteigend": this.sortiereAufsteigend,
+    "Absteigend": this.sortiereAbsteigend
+  }
+  sortierung = Object.keys(this.SORTIERUNGEN)[0]
+  STORAGE_KEY = "einkaufslisteDaten"
 
-  /**
-   * Sucht eine Gruppe nach ihrem Namen und liefert sie als Objekt zurück
-   * @param {String} suchName - Name der gesuchten Gruppe
-   * @param {Boolean} meldungAusgeben - steuert, ob eine Meldung ausgegeben wird
-   * @returns {Gruppe | null} gefundeneGruppe - die gefundene Gruppe; `null`, wenn nichts gefunden wurde
-   */
+
   gruppeFinden(suchName, meldungAusgeben) {
     for (let gruppe of this.gruppenListe) {
       if (gruppe.name == suchName) {
@@ -31,11 +27,7 @@ class Shopping {
     return null
   }
 
-  /**
-   * Fügt eine Gruppe in der Gruppenliste hinzu
-   * @param {String} name - Name der neuen Gruppe
-   * @returns {Gruppe} neueGruppe - die neu hinzugefügte Gruppe
-   */
+
   gruppeHinzufuegen(name) {
     let vorhandeneGruppe = this.gruppeFinden(name)
     if (!vorhandeneGruppe) {
@@ -49,10 +41,7 @@ class Shopping {
     }
   }
 
-  /**
-   * Entfernt die Gruppe mit dem `name`
-   * @param {String} name - Name der zu löschenden Gruppe
-   */
+
   gruppeEntfernen(name) {
     let loeschGruppe = this.gruppeFinden(name)
     if (loeschGruppe) {
@@ -65,11 +54,7 @@ class Shopping {
     }
   }
 
-  /**
-   * Benennt die Gruppe `alterName` um
-   * @param {String} alterName - Name der umzubenennenden Gruppe
-   * @param {String} neuerName - der neue Name der Gruppe
-   */
+
   gruppeUmbenennen(alterName, neuerName) {
     let suchGruppe = this.gruppeFinden(alterName, true)
     if (suchGruppe) {
@@ -78,17 +63,16 @@ class Shopping {
     }
   }
 
-  /**
-   * Gibt die Gruppen mit Artikeln auf der Konsole aus
-   */
+
   allesAuflisten() {
-    console.debug("Einkaufsliste")
+    console.debug("Watchlist")
     console.debug("--------------------")
     for (const gruppe of this.gruppenListe) {
       console.debug("[" + gruppe.name + "]")
       gruppe.artikelAuflisten(false)
     }
   }
+
 
   /**
    * Gibt eine Meldung aus und speichert den aktuellen Zustand im LocalStorage
@@ -101,9 +85,69 @@ class Shopping {
         console.log(nachricht)
       } else {
         console.debug(nachricht)
-        // Todo: Speichern
+        this.speichern()
       }
     }
+  }
+
+  sortieren(reihenfolge) {
+    this.sortierung = reihenfolge
+    const sortierFunktion = this.SORTIERUNGEN[reihenfolge]
+    // sortiere zuerst die Gruppen
+    this.gruppenListe.sort(sortierFunktion)
+
+    // sortiere danach die Artikel jeder Gruppe
+    for (let gruppe of this.gruppenListe) {
+      gruppe.artikelListe.sort(sortierFunktion)
+    }
+    this.informieren("[App] nach \"" + reihenfolge + "\" sortiert")
+  }
+
+
+  sortiereAufsteigend(a, b) {
+    const nameA = a.name.toLowerCase()
+    const nameB = b.name.toLowerCase()
+    return nameA < nameB ? -1 : (nameA > nameB ? 1 : 0)
+  }
+
+  sortiereAbsteigend(a, b) {
+    const nameA = a.name.toLowerCase()
+    const nameB = b.name.toLowerCase()
+    return nameA < nameB ? 1 : (nameA > nameB ? -1 : 0)
+  }
+
+  sortiereIndex(a, b) {
+    return a.index < b.index ? -1 : (a.index > b.index ? 1 : 0)
+  }
+
+
+  speichern(daten) {
+    const json = {
+      gruppenListe: this.gruppenListe,
+      aktiveGruppeName: this.aktiveGruppe.name,
+    }
+    // Object.assign(json, daten)
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(json))
+  }
+
+
+  laden() {
+    const daten = localStorage.getItem(this.STORAGE_KEY)
+    if (!daten) return false
+    this.initialisieren(JSON.parse(daten))
+    return true
+  }
+
+
+  initialisieren(jsonDaten,) {
+    this.gruppenListe = []
+    for (let gruppe of jsonDaten.gruppenListe) {
+      let neueGruppe = this.gruppeHinzufuegen(gruppe.name)
+      for (let artikel of gruppe.artikelListe) {
+        neueGruppe.artikelObjektHinzufuegen(artikel)
+      }
+    }
+    this.aktiveGruppe = this.gruppeFinden(jsonDaten.aktiveGruppeName)
   }
 }
 

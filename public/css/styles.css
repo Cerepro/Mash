@@ -1,12 +1,12 @@
 #root {
     width: 23rem;
-    background-image: url("../img/rotwein.jpg");
+    background-image: url("../img/img.png");
     background-repeat: no-repeat;
     background-position:  top center;
     background-attachment: fixed;
 }
 #container {
-    opacity: 85%;
+    opacity: 100%;
 }
 :root {
     --mdc-theme-primary: #33691E;
