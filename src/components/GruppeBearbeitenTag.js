@@ -1,4 +1,5 @@
 import React from 'react'
+import Modell from '../model/Shopping'
 
 class GruppeBearbeitenTag extends React.Component {
   constructor(props) {
@@ -10,15 +11,13 @@ class GruppeBearbeitenTag extends React.Component {
   }
 
   handleChange(event) {
-    // ToDo: implementieren
     let gruppenName = event.target.value
-    this.setState({newName:gruppenName})
+    this.setState({newName: gruppenName})
   }
 
   gruppeUmbenennen(gruppe, event) {
     if (event && event.key != "Enter") return
-    // ToDo: implementieren
-    gruppe.name = this.state.newName
+    Modell.gruppeUmbenennen(gruppe.name, this.state.newName)
     this.setState({isEditing: false})
   }
 
@@ -39,7 +38,7 @@ class GruppeBearbeitenTag extends React.Component {
       <dt>
         <input type="search" value={this.state.newName} autoFocus={true}
                onChange={event => this.handleChange(event)}
-               onKeyDown={event => this.gruppeUmbenennen(gruppe, event)}/>
+               onKeyPress={event => this.gruppeUmbenennen(gruppe, event)}/>
         <i className="material-icons"
            onClick={() => this.setState({isEditing: false})}>cancel </i>
         <i className="material-icons"
