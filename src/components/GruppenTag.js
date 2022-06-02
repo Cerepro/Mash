@@ -1,5 +1,7 @@
 import React from 'react'
 import ArtikelTag from './ArtikelTag'
+import Modell from "../model/Shopping"
+
 
 class GruppenTag extends React.Component {
   constructor(props) {
@@ -11,9 +13,10 @@ class GruppenTag extends React.Component {
   }
 
 
-  artikelEntfernen(name) {
+  artikelEntfernen (name) {
     this.props.gruppe.artikelEntfernen(name)
-    // this.props.aktiveGruppeHandler(this.props.gruppe)
+    this.props.aktiveGruppeHandler(this.props.gruppe)
+    Modell.informieren("[Gruppe] Artikel " + name + " wurde gelöscht")
     this.forceUpdate()
   }
 

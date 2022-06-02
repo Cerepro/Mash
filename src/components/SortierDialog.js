@@ -1,5 +1,5 @@
 import React from 'react'
-import Modell from '../../../js-2022-04/src/model/Shopping'
+import Modell from '../model/Shopping'
 
 class SortierDialog extends React.Component {
   constructor(props) {

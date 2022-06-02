@@ -8,12 +8,12 @@ import SortierDialog from "./components/SortierDialog";
 class App extends React.Component {
   constructor(props) {
     super(props)
-    this.initialisieren()
+    //this.initialisieren()
     this.state = {
       aktiveGruppe: null,
       showGruppenDialog: false,
       showSortierDialog: false,
-      einkaufenAufgeklappt: true,
+      einkaufenAufgeklappt: false,
       erledigtAufgeklappt: false
     }
   }
@@ -26,7 +26,7 @@ class App extends React.Component {
 
   initialisieren() {
     let staffel1 = Modell.gruppeHinzufuegen("Staffel1")
-    let film1 = staffel1.artikelHinzufuegen("Mobiles Armee Chirurgie Hospital – Pilot\t")
+    let film1 = staffel1.artikelHinzufuegen("Mobiles Armee Chirurgie Hospital – Pilot")
     film1.gekauft = true
     staffel1.artikelHinzufuegen("Angebot, Nachfrage und Prestige")
     staffel1.artikelHinzufuegen("Das total verrückte Feldlazarett")
@@ -99,11 +99,18 @@ class App extends React.Component {
     this.setState({aktiveGruppe: Modell.aktiveGruppe})
   }
 
+  closeSortierDialog = (reihenfolge, sortieren) => {
+    if (sortieren) {
+      Modell.sortieren(reihenfolge)
+    }
+    this.setState({showSortierDialog: false})
+  }
+
   render() {
     let nochNichtGesehen = []
     if (this.state.einkaufenAufgeklappt == true) {
       for (const gruppe of Modell.gruppenListe) {
-        nochZuKaufen.push(<GruppenTag
+        nochNichtGesehen.push(<GruppenTag
           key={gruppe.id}
           gruppe={gruppe}
           gekauft={false}
@@ -116,7 +123,7 @@ class App extends React.Component {
     let schonGesehen = []
     if (this.state.erledigtAufgeklappt) {
       for (const gruppe of Modell.gruppenListe) {
-        schonGekauft.push(<GruppenTag
+        schonGesehen.push(<GruppenTag
           key={gruppe.id}
           gruppe={gruppe}
           gekauft={true}
@@ -132,6 +139,10 @@ class App extends React.Component {
         onDialogClose={() => this.setState({showGruppenDialog: false})}/>
     }
 
+    let sortierDialog = ""
+    if (this.state.showSortierDialog) {
+      sortierDialog = <SortierDialog onDialogClose={this.closeSortierDialog}/>
+    }
     return (
       <div id="container">
         <header>
@@ -164,7 +175,7 @@ class App extends React.Component {
           </section>
           <hr/>
           <section>
-            <h2> schon gesehen
+            <h2> schon Gesehen
               <i onClick={() => this.erledigtAufZuKlappen()} className="material-icons">
                 {this.state.erledigtAufgeklappt ? 'expand_more' : 'expand_less'}
               </i>
@@ -182,7 +193,10 @@ class App extends React.Component {
             <span className="material-icons">bookmark_add</span>
             <span className="mdc-button__ripple"></span> Gruppen
           </button>
-          <button className="mdc-button mdc-button--raised">
+
+          <button className="mdc-button mdc-button--raised"
+                  onClick={() => this.setState({showSortierDialog: true})}>
+
             <span className="material-icons">sort</span>
             <span className="mdc-button__ripple"></span> Sort
           </button>
