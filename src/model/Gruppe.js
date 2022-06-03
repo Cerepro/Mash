@@ -10,7 +10,6 @@ import Modell from "./Shopping.js"
  * @property {String}    name         - Name der Gruppe
  * @property {Artikel[]} artikelListe - Liste der Artikel in dieser Gruppe
  */
-
 class Gruppe {
   static counter = 1
   id = Gruppe.counter++
@@ -27,7 +26,7 @@ class Gruppe {
    * Sucht einen Artikel anhand seines Namens
    * @param {String} suchName - Name des gesuchten Artikels
    * @param {Boolean} meldungAusgeben - steuert, ob eine Meldung ausgegeben wird
-   * @returns {Artikel|null}
+   * @returns {Artikel|null} artikel - der gefundene Artikel bzw. `null`, wenn nichts gefunden wurde
    */
   artikelFinden(suchName, meldungAusgeben) {
     for (let artikel of this.artikelListe) {
@@ -40,7 +39,6 @@ class Gruppe {
     }
     return null
   }
-
 
   /**
    * Listet die Artikel in dieser Gruppe in der Konsole auf
@@ -70,6 +68,7 @@ class Gruppe {
       Modell.informieren("[" + this.name + "] Artikel " + name + " existiert schon!", true)
     }
   }
+
   /**
    * Erzeugt einen neuen Artikel aus einem eingelesenen JSON-Objekt.
    * Wird von {@link Modell.initialisieren()} verwendet.
@@ -80,11 +79,11 @@ class Gruppe {
     // kopiert alle Properties aus "artikel" nach "neuerArtikel"
     Object.assign(neuerArtikel, artikel)
   }
+
   /**
    * Entfernt einen Artikel aus der ArtikelListe
    * @param {String} name - Index des zu entfernenden Artikels
    */
-
   artikelEntfernen(name) {
     let loeschArtikel = this.artikelFinden(name)
     if (loeschArtikel) {
@@ -98,6 +97,7 @@ class Gruppe {
       )
     }
   }
+
   /**
    * Nummeriert alle Artikel in der Artikel-Liste neu durch
    */

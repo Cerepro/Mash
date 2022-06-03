@@ -7,7 +7,6 @@ import Gruppe from './Gruppe.js'
  * @property {Gruppe}   aktiveGruppe      - enthält die aktuell ausgewählte Gruppe
  * @property {boolean}  meldungenAusgeben - steuert, ob eine Meldung ausgegeben werden soll oder nicht
  */
-
 class Shopping {
   gruppenListe = []
   aktiveGruppe = null
@@ -38,18 +37,17 @@ class Shopping {
     }
     return null
   }
+
   /**
    * Fügt eine Gruppe in der Gruppenliste hinzu
    * @param {String} name - Name der neuen Gruppe
    * @returns {Gruppe} neueGruppe - die neu hinzugefügte Gruppe
    */
-
   gruppeHinzufuegen(name) {
     let vorhandeneGruppe = this.gruppeFinden(name)
     if (!vorhandeneGruppe) {
       let neueGruppe = new Gruppe(name, this.gruppenListe.length)
       this.gruppenListe.push(neueGruppe)
-      this.aktiveGruppe = neueGruppe
       this.informieren("[App] Gruppe \"" + name + "\" hinzugefügt")
       return neueGruppe
     } else {
@@ -98,7 +96,6 @@ class Shopping {
     }
   }
 
-
   /**
    * Gibt eine Meldung aus und speichert den aktuellen Zustand im LocalStorage
    * @param {String} nachricht - die auszugebende Nachricht
@@ -131,13 +128,13 @@ class Shopping {
     }
     this.informieren("[App] nach \"" + reihenfolge + "\" sortiert")
   }
+
   /**
    * Sortiert Elemente alphabetisch aufsteigend nach dem Namen
    * @param {Gruppe|Artikel} a - erstes Element
    * @param {Gruppe|Artikel} b - zweites Element
    * @returns {Number} - wenn kleiner: -1, wenn gleich: 0, wenn größer: +1
    */
-
   sortiereAufsteigend(a, b) {
     const nameA = a.name.toLowerCase()
     const nameB = b.name.toLowerCase()
@@ -173,29 +170,30 @@ class Shopping {
   speichern(daten) {
     const json = {
       gruppenListe: this.gruppenListe,
-      aktiveGruppeName: this.aktiveGruppe.name,
+      aktiveGruppeName: this.aktiveGruppe?.name,
     }
-    // Object.assign(json, daten)
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(json))
   }
 
-
   /**
    * Lädt den Modell-Zustand aus dem LocalStorage
-   * @return {Boolean} erfolg - meldet, ob die Daten erfolgreich aus dem LocalStorage geladen wurden
+   * @return {Boolean} erfolg - meldet, ob die Daten erfolgreich gelesen wurden
    */
   laden() {
     const daten = localStorage.getItem(this.STORAGE_KEY)
-    if (!daten) return false
-    this.initialisieren(JSON.parse(daten))
-    return true
+    if (daten) {
+      this.initialisieren(JSON.parse(daten))
+      this.informieren("[App] Daten aus dem LocalStorage geladen")
+      return true
+    }
+    return false
   }
+
   /**
    * Initialisiert das Modell aus dem LocalStorage
    * @param {Object} jsonDaten - die übergebenen JSON-Daten
    */
-
-  initialisieren(jsonDaten,) {
+  initialisieren(jsonDaten) {
     this.gruppenListe = []
     for (let gruppe of jsonDaten.gruppenListe) {
       let neueGruppe = this.gruppeHinzufuegen(gruppe.name)
@@ -203,7 +201,9 @@ class Shopping {
         neueGruppe.artikelObjektHinzufuegen(artikel)
       }
     }
-    this.aktiveGruppe = this.gruppeFinden(jsonDaten.aktiveGruppeName)
+    if (jsonDaten.aktiveGruppeName) {
+      this.aktiveGruppe = this.gruppeFinden(jsonDaten.aktiveGruppeName)
+    }
   }
 }
 

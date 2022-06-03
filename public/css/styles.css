@@ -1,27 +1,29 @@
 #root {
     width: 23rem;
-    background-image: url("../img/img.png");
+    background-image: url("../img/mash 1,4x1,4.jpeg");
     background-repeat: no-repeat;
     background-position:  top center;
-    background-attachment: fixed;
+    background-attachment: 10%;
 }
 #container {
-    opacity: 100%;
+    opacity: 85%;
 }
 :root {
-    --mdc-theme-primary: #33691E;
-    --mdc-theme-secondary: #827717;
+    --mdc-theme-primary: rgba(62, 59, 33, 0.75);
+    --mdc-theme-secondary: #0d41b4;
 }
 dt {
-    background-color: #7CB342;
+    background-color: #3e3b21;
     color: var(--mdc-theme-on-primary);
 }
 h2, dd {
     background-color: var(--mdc-theme-on-primary);
 }
 
-.aktiv { background-color: #4b81d6 }
-.inaktiv { background-color: #7CB342 }
+.aktiv { background-color: #948c63
+}
+.inaktiv { background-color: rgba(148, 140, 99, 0)
+}
 h1, h2, dl {
     margin: 0;
 }

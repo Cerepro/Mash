@@ -4,65 +4,30 @@ import GruppenTag from './components/GruppenTag'
 import GruppenDialog from './components/GruppenDialog'
 import SortierDialog from "./components/SortierDialog";
 
-
+/**
+ * @version 1.0
+ * @author Naumann Patrick <Patrick.Naumann2022@Gmail.com>
+ * @description Diese App ist eine Einkaufsliste mit React.js und separatem Model, welche Offline verwendet werden kann
+ * @license Gnu Public Lesser License 3.0
+ *
+ */
 class App extends React.Component {
   constructor(props) {
     super(props)
-    //this.initialisieren()
     this.state = {
       aktiveGruppe: null,
       showGruppenDialog: false,
       showSortierDialog: false,
-      einkaufenAufgeklappt: false,
+      einkaufenAufgeklappt: true,
       erledigtAufgeklappt: false
     }
   }
+
   componentDidMount() {
     if (!Modell.laden()) {
       this.initialisieren()
     }
     this.setState(this.state)
-  }
-
-  initialisieren() {
-    let staffel1 = Modell.gruppeHinzufuegen("Staffel1")
-    let film1 = staffel1.artikelHinzufuegen("Mobiles Armee Chirurgie Hospital – Pilot")
-    film1.gekauft = true
-    staffel1.artikelHinzufuegen("Angebot, Nachfrage und Prestige")
-    staffel1.artikelHinzufuegen("Das total verrückte Feldlazarett")
-    staffel1.artikelHinzufuegen("Über alles geliebte Sklavin")
-    staffel1.artikelHinzufuegen("Kennen Sie „Chirurgen in Uniform“?")
-    staffel1.artikelHinzufuegen("Hilfe, einen Psychiater bitte!")
-    staffel1.artikelHinzufuegen("Mein lieber, lieber John")
-    staffel1.artikelHinzufuegen("Ach Henry, komm doch wieder")
-    staffel1.artikelHinzufuegen("Der Dieb will nur das Beste")
-    staffel1.artikelHinzufuegen("Eine richtige, schöne Gelbsucht")
-    staffel1.artikelHinzufuegen("Lieber Papa, mir geht es gut")
-    staffel1.artikelHinzufuegen("Ein Aufstand für Edwina")
-    staffel1.artikelHinzufuegen("Noch so eine Liebesgeschichte")
-    staffel1.artikelHinzufuegen("Nun danket alle Tuttle")
-    staffel1.artikelHinzufuegen("Nur Leben in die Bude!")
-    staffel1.artikelHinzufuegen("Hörst du die Kugeln? ")
-    staffel1.artikelHinzufuegen("Nur Leben in die Bude!")
-    staffel1.artikelHinzufuegen("Nur Leben in die Bude!")
-    staffel1.artikelHinzufuegen("… und alles splitternackt")
-    staffel1.artikelHinzufuegen("Jeder friert für sich allein")
-    staffel1.artikelHinzufuegen("Ein Blindgänger hat’s in sich")
-    staffel1.artikelHinzufuegen("Hier, bitte mal absaugen")
-    staffel1.artikelHinzufuegen("Gier, Angst und noch mal Gier")
-    staffel1.artikelHinzufuegen("Unter der Hand gesagt")
-    staffel1.artikelHinzufuegen("Für manches nicht gut genug")
-
-    let staffel2 = Modell.gruppeHinzufuegen("Staffel2")
-    let film2 = staffel2.artikelHinzufuegen("Zerstritten stehen wir zusammen")
-    film2.gekauft = true
-    staffel2.artikelHinzufuegen("Das ist Fünf-Uhr-Charlie")
-
-    let staffel3 = Modell.gruppeHinzufuegen("Staffel3")
-    let film3 = staffel3.artikelHinzufuegen("Bauch rein - Brust raus")
-    film3.gekauft = true
-    staffel3.artikelHinzufuegen("Meuterei im Billigfilm")
-
   }
 
 
@@ -75,6 +40,10 @@ class App extends React.Component {
     this.setState({erledigtAufgeklappt: !this.state.erledigtAufgeklappt})
   }
 
+  /**
+   * Hakt einen Artikel ab oder reaktiviert ihn
+   * @param {Artikel} artikel - der aktuelle Artikel, der gerade abgehakt oder reaktiviert wird
+   */
   artikelChecken = (artikel) => {
     artikel.gekauft = !artikel.gekauft
     const aktion = (artikel.gekauft) ? "erledigt" : "reaktiviert"
@@ -151,12 +120,12 @@ class App extends React.Component {
             className="mdc-text-field mdc-text-field--filled mdc-text-field--with-trailing-icon mdc-text-field--no-label">
             <span className="mdc-text-field__ripple"></span>
             <input className="mdc-text-field__input" type="search"
-                   id="artikelEingabe" placeholder="Artikel hinzufügen"
+                   id="artikelEingabe" placeholder="Folge hinzufügen"
                    onKeyPress={e => (e.key == 'Enter') ? this.artikelHinzufuegen() : ''}/>
             <span className="mdc-line-ripple"></span>
             <i className="material-icons mdc-text-field__icon mdc-text-field__icon--trailing"
                tabIndex="0" role="button"
-               onClick={() => this.artikelHinzufuegen()}>add_circle</i>
+               onClick={() => this.folgeHinzufuegen()}>add_circle</i>
           </label>
 
         </header>
@@ -191,7 +160,7 @@ class App extends React.Component {
           <button className="mdc-button mdc-button--raised"
                   onClick={() => this.setState({showGruppenDialog: true})}>
             <span className="material-icons">bookmark_add</span>
-            <span className="mdc-button__ripple"></span> Gruppen
+            <span className="mdc-button__ripple"></span> Staffel
           </button>
 
           <button className="mdc-button mdc-button--raised"
@@ -202,7 +171,11 @@ class App extends React.Component {
           </button>
           <button className="mdc-button mdc-button--raised">
             <span className="material-icons">settings</span>
-            <span className="mdc-button__ripple"></span> Setup
+          </button>
+          <button className="mdc-button mdc-button--raised"
+                  onClick={this.lsLoeschen}>
+            <span className="material-icons">clear_all</span>
+            <span className="mdc-button__ripple"></span> Clear
           </button>
         </footer>
 
