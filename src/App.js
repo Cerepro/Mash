@@ -19,21 +19,33 @@ class App extends React.Component {
       showGruppenDialog: false,
       showSortierDialog: false,
       einkaufenAufgeklappt: true,
-      erledigtAufgeklappt: false
+      erledigtAufgeklappt: false,
+      isEditing: false,
+      newName: "",
+      newSerie:""
     }
   }
 
   componentDidMount() {
     if (!Modell.laden()) {
-      this.initialisieren()
+
     }
     this.setState(this.state)
   }
 
+  handleChange(event) {
+    this.setState({newSerie: event.target.value})
+  }
 
   einkaufenAufZuKlappen() {
     let neuerZustand = !this.state.einkaufenAufgeklappt
     this.setState({einkaufenAufgeklappt: neuerZustand})
+  }
+
+  lsLoeschen() {
+    if (confirm("Wollen Sie wirklich alles löschen?!")) {
+      localStorage.clear()
+    }
   }
 
   erledigtAufZuKlappen() {
@@ -75,6 +87,15 @@ class App extends React.Component {
     this.setState({showSortierDialog: false})
   }
 
+  /**
+   * Reagiert auf Änderungen im Eingabefeld und speichert den neuen Wert im newName-state
+   * @param {Event.CHANGE} event - das Change-Event im Eingabefeld
+   */
+  handleChange(event) {
+    this.setState({newName: event.target.value})
+  }
+
+
   render() {
     let nochNichtGesehen = []
     if (this.state.einkaufenAufgeklappt == true) {
@@ -112,10 +133,34 @@ class App extends React.Component {
     if (this.state.showSortierDialog) {
       sortierDialog = <SortierDialog onDialogClose={this.closeSortierDialog}/>
     }
+
+    // erlaubt das abhaken und reaktivieren
+    const viewTemplate = (
+      <dd>
+        <h1>{this.state.newName}</h1>
+          <i className="material-icons"
+             onClick={() => this.setState({isEditing: true})}>edit</i>
+      </dd>
+
+    )
+
+
+    let editSerieTemplate = (
+      <dd>
+        <input type="search" value={this.state.newSerie} autoFocus={true}
+               onChange={event => this.handleChange(event)}
+        />
+        <i className="material-icons"
+           onClick={() => this.setState({isEditing: false})}>cancel </i>
+        <i className="material-icons"
+           onClick={() => this.setState({newSerie:this.state.newSerie})}>check_circle  </i>
+      </dd>
+    )
+
     return (
       <div id="container">
         <header>
-          <h1>Watchlist</h1>
+          {this.state.isEditing? (editSerieTemplate):(viewTemplate)}
           <label
             className="mdc-text-field mdc-text-field--filled mdc-text-field--with-trailing-icon mdc-text-field--no-label">
             <span className="mdc-text-field__ripple"></span>
