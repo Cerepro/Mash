@@ -1,26 +1,26 @@
 #root {
     width: 23rem;
-    background-image: url("../img/mash 1,4x1,4.jpeg");
+    background-image: url("../img/Movie.jpeg");
     background-repeat: no-repeat;
-    background-position:  top center;
-    background-attachment: 10%;
+    background-position:  center,center;
+    background-attachment: 100%;
 }
 #container {
     opacity: 85%;
 }
 :root {
-    --mdc-theme-primary: rgba(62, 59, 33, 0.75);
-    --mdc-theme-secondary: #0d41b4;
+    --mdc-theme-primary: rgb(255, 255, 255);
+    --mdc-theme-secondary: #0d0909;
 }
 dt {
-    background-color: #3e3b21;
+    background-color: #ffffff;
     color: var(--mdc-theme-on-primary);
 }
 h2, dd {
     background-color: var(--mdc-theme-on-primary);
 }
 
-.aktiv { background-color: #948c63
+.aktiv { background-color: #0d0909
 }
 .inaktiv { background-color: rgba(148, 140, 99, 0)
 }

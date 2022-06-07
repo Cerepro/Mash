@@ -11,6 +11,8 @@ import SortierDialog from "./components/SortierDialog";
  * @license Gnu Public Lesser License 3.0
  *
  */
+
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -21,7 +23,6 @@ class App extends React.Component {
       einkaufenAufgeklappt: true,
       erledigtAufgeklappt: false,
       isEditing: false,
-      newName: "",
       newSerie:""
     }
   }
@@ -33,9 +34,6 @@ class App extends React.Component {
     this.setState(this.state)
   }
 
-  handleChange(event) {
-    this.setState({newSerie: event.target.value})
-  }
 
   einkaufenAufZuKlappen() {
     let neuerZustand = !this.state.einkaufenAufgeklappt
@@ -92,11 +90,18 @@ class App extends React.Component {
    * @param {Event.CHANGE} event - das Change-Event im Eingabefeld
    */
   handleChange(event) {
-    this.setState({newName: event.target.value})
+      this.setState({newSerie: event.target.value})
   }
 
+  serieUmbenennen(serie, event){
+    if (event && event.key != "Enter") return
+    this.setState({newSerie : serie})
+    this.setState({isEditing: false})
+  }
 
   render() {
+
+    let serie = this.state.newSerie
     let nochNichtGesehen = []
     if (this.state.einkaufenAufgeklappt == true) {
       for (const gruppe of Modell.gruppenListe) {
@@ -136,11 +141,11 @@ class App extends React.Component {
 
     // erlaubt das abhaken und reaktivieren
     const viewTemplate = (
-      <dd>
-        <h1>{this.state.newName}</h1>
+      <dt>
+        <h1>{this.state.newSerie}</h1>
           <i className="material-icons"
              onClick={() => this.setState({isEditing: true})}>edit</i>
-      </dd>
+      </dt>
 
     )
 
@@ -153,7 +158,7 @@ class App extends React.Component {
         <i className="material-icons"
            onClick={() => this.setState({isEditing: false})}>cancel </i>
         <i className="material-icons"
-           onClick={() => this.setState({newSerie:this.state.newSerie})}>check_circle  </i>
+           onClick={() => this.serieUmbenennen(serie)}>check_circle  </i>
       </dd>
     )
 
