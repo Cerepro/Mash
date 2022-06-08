@@ -10,6 +10,7 @@ class GruppenDialog extends React.Component {
     }
   }
 
+  /** fügt eine Gruppe hinzu */
   gruppeHinzufuegen() {
 
     let eingabe = document.getElementById("eingabe")
@@ -18,16 +19,20 @@ class GruppenDialog extends React.Component {
       Modell.gruppeHinzufuegen(gruppenName)
       this.setState(this.state.gruppenListe)
     }
-    eingabe.value =  ""
+    eingabe.value = ""
     eingabe.focus()
   }
 
+  /**
+   * Entfernt ausgewählte Gruppe
+   * @param name - entfernt Gruppen Name
+   */
   gruppeEntfernen(name) {
 
     Modell.gruppeEntfernen(name)
     this.setState(this.state.gruppenListe)
 
-    }
+  }
 
 
   render() {

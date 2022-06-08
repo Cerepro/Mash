@@ -2,74 +2,94 @@
     width: 23rem;
     background-image: url("../img/Movie.jpeg");
     background-repeat: no-repeat;
-    background-position:  center,center;
+    background-position: center, center;
     background-attachment: 100%;
 }
+
 #container {
     opacity: 85%;
 }
+
 :root {
     --mdc-theme-primary: rgb(148, 140, 99);
     --mdc-theme-secondary: #0d0909;
 }
+
 dt {
     background-color: #ffffff;
     color: var(--mdc-theme-on-primary);
 }
+
 h2, dd {
     background-color: var(--mdc-theme-on-primary);
 }
 
-.aktiv { background-color: #0d0909
+.aktiv {
+    background-color: #0d0909
 }
-.inaktiv { background-color: rgba(148, 140, 99, 0)
+
+.inaktiv {
+    background-color: rgba(148, 140, 99, 0)
 }
+
 h1, h2, dl {
     margin: 0;
 }
+
 h2 {
     padding: 0 0 10px 0;
 }
+
 i.material-icons {
     cursor: pointer;
     float: right;
 }
+
 button.material-icons {
     font-size: inherit;
     vertical-align: bottom
 }
+
 [type="checkbox"] {
     vertical-align: top;
     margin-right: 8px;
 }
+
 dt {
     display: flex;
     font-weight: 500;
     padding: 3px 5px;
 }
+
 dt span {
     width: 100%;
 }
+
 dt, dd {
     height: 2rem;
     font-size: 1.2rem;
 }
+
 dd {
     display: flex;
     margin-left: 0;
     margin: 3px;
 }
+
 dd label {
     padding: 3px 0;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 dd label input[type="checkbox"] {
     margin: 6px 6px;
 }
+
 dd input[type="search"] {
     margin-left: 1.5rem;
 }
+
 .mdc-text-field {
     height: 2rem;
 }
@@ -78,6 +98,7 @@ label {
     width: 91%;
     cursor: pointer
 }
+
 footer {
     display: flex;
     justify-content: space-between;
@@ -86,11 +107,13 @@ footer {
 .mdc-dialog {
     opacity: 100%;
 }
+
 .mdc-dialog__surface {
     position: absolute;
     top: 10%;
     left: 25px;
 }
+
 .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;

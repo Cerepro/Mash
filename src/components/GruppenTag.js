@@ -2,7 +2,15 @@ import React from 'react'
 import ArtikelTag from './ArtikelTag'
 import Modell from "../model/Shopping"
 
-
+/**
+ * Diese Komponente repräsentiert eine Artikelgruppe
+ * @component
+ * @property {Boolean} aktiv - setzt diese Gruppe als `aktiveGruppe` in der App.js
+ * @property {Function} aktiveGruppeHandler - setzt diese Gruppe als `aktiveGruppe` in der {@link ../App}
+ * @property {Function} checkHandler - erledigt und reaktiviert Artikel; wird an den {@link ArtikelTag} durchgereicht
+ * @property {Boolean} gekauft - steuert, ob diese Gruppe in der "Gekauft-" oder "NochZuKaufen-Liste" erscheint
+ * @property {Gruppe} gruppe - die darzustellende Gruppe
+ */
 class GruppenTag extends React.Component {
   constructor(props) {
     super(props)
@@ -12,14 +20,20 @@ class GruppenTag extends React.Component {
 
   }
 
-
-  artikelEntfernen (name) {
+  /**
+   *  Entfernt den Artikel
+   * @param name - entfernt name des Artikels
+   */
+  artikelEntfernen(name) {
     this.props.gruppe.artikelEntfernen(name)
     this.props.aktiveGruppeHandler(this.props.gruppe)
     Modell.informieren("[Gruppe] Artikel " + name + " wurde gelöscht")
     this.forceUpdate()
   }
 
+  /**
+   * klappt auf oder zu
+   */
   aufZuKlappen() {
     this.setState({aufgeklappt: !this.state.aufgeklappt})
   }
