@@ -9,7 +9,7 @@
     opacity: 85%;
 }
 :root {
-    --mdc-theme-primary: rgb(255, 255, 255);
+    --mdc-theme-primary: rgb(148, 140, 99);
     --mdc-theme-secondary: #0d0909;
 }
 dt {
